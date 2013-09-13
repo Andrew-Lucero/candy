@@ -2,7 +2,7 @@ import sys
 import time
 import pygame
 import pygame.locals
-from main import HEIGHT, WIDTH
+from main import HEIGHT, WIDTH, SPEED
 import Player
 import Candy
 
@@ -71,6 +71,10 @@ class Game:
             if self.player.player.colliderect(self.candy.candy):
                 self.score += 1
                 self.prev = time.time()
+                if self.candy.type == 1:
+                    self.player.speed = 8 #powerup candy
+                else:
+                    self.player.speed = 5
                 self.candy.move()
             if time.time() - self.prev >= 1.75:
                 self.lives -= 1
@@ -80,6 +84,8 @@ class Game:
                                                     (255, 0, 40))
             if self.lives == 0:
                 print "Score: %d" % (self.score)
+                pygame.mixer.Sound('Resources/gameover.wav').play()
+                time.sleep(3.0)
                 pygame.quit()
                 sys.exit()
             self.windowSurface.fill((0, 0, 0))
